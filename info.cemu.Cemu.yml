@@ -186,8 +186,8 @@ modules:
         x-checker-data:
           type: git
           tag-pattern: ^v([\d.]+-\d+)$
-        tag: v2.0-29
-        commit: 3acdd47eaf080293ba61f3d7d55bfba4be574270
+        tag: v2.0-30
+        commit: aa63a6a36e3a3c2daa9ad94406a1290efdb6fbf9
       - type: patch
         path: arm_maes.patch
       - type: script
