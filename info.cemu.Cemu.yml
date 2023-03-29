@@ -188,8 +188,6 @@ modules:
           tag-pattern: ^v([\d.]+-\d+)$
         tag: v2.0-30
         commit: aa63a6a36e3a3c2daa9ad94406a1290efdb6fbf9
-      - type: patch
-        path: arm_maes.patch
       - type: script
         commands:
           - |
