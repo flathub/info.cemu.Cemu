@@ -209,6 +209,7 @@ modules:
             version = os.environ.get('AS_META_VERSION')
             release_type = os.environ.get('AS_META_TYPE')
             release_date = os.environ.get('AS_META_DATE')
+            release_url = os.environ.get('AS_META_URL')
             tree = ET.parse(meta_file)
             root = tree.getroot()
             el_releases = root.find('releases')
@@ -216,7 +217,7 @@ modules:
               el_releases.remove(el_release)
             el_release = ET.SubElement(el_releases, 'release')
             el_url = ET.SubElement(el_release, 'url')
-            el_url.text = f'https://github.com/cemu-project/Cemu/releases/tag/{version}'
+            el_url.text = release_url
             el_release.attrib['type'] = release_type
             el_release.attrib['date'] = release_date
             el_release.attrib['version'] = version
@@ -224,8 +225,9 @@ modules:
             tree.write(meta_file, encoding='utf8')
     post-install:
       - AS_META_DATE="$(git log -1 --format=%ci | awk '{print $1}')" AS_META_FILE='dist/linux/info.cemu.Cemu.metainfo.xml'
-        AS_META_TYPE='development' AS_META_VERSION="$(git describe --tags)" python
-        ./dev_release_metainfo.py
+        AS_META_URL="https://github.com/cemu-project/Cemu/releases/tag/$(git describe
+        --tags)" AS_META_TYPE='development' AS_META_VERSION="$(git describe --tags
+        | tr -d 'v' | sed 's/-/~experimental/')" python ./dev_release_metainfo.py
       - install -Dm644 -t ${FLATPAK_DEST}/share/appdata/ dist/linux/info.cemu.Cemu.metainfo.xml
       - install -Dm644 -t ${FLATPAK_DEST}/share/applications/ dist/linux/info.cemu.Cemu.desktop
       - install -Dm644 -t ${FLATPAK_DEST}/share/icons/hicolor/128x128/apps/ dist/linux/info.cemu.Cemu.png
