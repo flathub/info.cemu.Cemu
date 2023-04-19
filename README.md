@@ -10,6 +10,16 @@ If you've been using the AppImage you can move your saves and settings to the fl
 mv ~/.local/share/Cemu ~/.var/app/info.cemu.Cemu/data/Cemu
 ```
 
+Shader cache with:
+```sh
+mv ~/.cache/Cemu ~/.var/app/info.cemu.Cemu/cache/Cemu
+```
+
+Setting and controller configs with:
+```sh
+mv ~/.config/Cemu ~/.var/app/info.cemu.Cemu/config/Cemu
+```
+
 ## Filesystem write permissions
 
 In order to convert files to wua you can run Cemu without filesystem sandboxing from the terminal via:
