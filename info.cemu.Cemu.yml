@@ -186,8 +186,8 @@ modules:
         x-checker-data:
           type: git
           tag-pattern: ^v([\d.]+-\d+)$
-        tag: v2.0-35
-        commit: c209feeaaa0424a38c5f19e71cd98fd738b2d47d
+        tag: v2.0-36
+        commit: f48ad6a1ca13d1abebd2c3b1f789bbe10f6fff1a
       - type: script
         commands:
           - |
