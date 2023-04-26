@@ -181,6 +181,8 @@ modules:
           tag-pattern: ^v([\d.]+-\d+)$
         tag: v2.0-36
         commit: f48ad6a1ca13d1abebd2c3b1f789bbe10f6fff1a
+      - type: patch
+        path: bad_format.patch
       - type: script
         commands:
           - |

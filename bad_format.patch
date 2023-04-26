@@ -1,0 +1,24 @@
+diff --git a/src/Cafe/HW/Latte/Renderer/Vulkan/SwapchainInfoVk.cpp b/src/Cafe/HW/Latte/Renderer/Vulkan/SwapchainInfoVk.cpp
+index 13d21ea..770c47e 100644
+--- a/src/Cafe/HW/Latte/Renderer/Vulkan/SwapchainInfoVk.cpp
++++ b/src/Cafe/HW/Latte/Renderer/Vulkan/SwapchainInfoVk.cpp
+@@ -316,13 +316,16 @@ SwapchainInfoVk::SwapchainSupportDetails SwapchainInfoVk::QuerySwapchainSupport(
+ 
+ VkSurfaceFormatKHR SwapchainInfoVk::ChooseSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& formats) const
+ {
++	bool useSRGB = mainWindow ? LatteGPUState.tvBufferUsesSRGB : LatteGPUState.drcBufferUsesSRGB;
++
+ 	if (formats.size() == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
+-		return{ VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
++		if (useSRGB)
++			return{ VK_FORMAT_B8G8R8A8_SRGB, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
++		else
++			return{ VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
+ 
+ 	for (const auto& format : formats)
+ 	{
+-		bool useSRGB = mainWindow ? LatteGPUState.tvBufferUsesSRGB : LatteGPUState.drcBufferUsesSRGB;
+-
+ 		if (useSRGB)
+ 		{
+ 			if (format.format == VK_FORMAT_B8G8R8A8_SRGB && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
