@@ -149,14 +149,7 @@ modules:
           url-template: https://github.com/fmtlib/fmt/archive/$version.tar.gz
 
   - name: wxwidgets
-    buildsystem: autotools
-    config-opts:
-      - --with-gtk=3
-      - --disable-sdltest
-      - --enable-shared
-      - --with-opengl
-      - --with-sdl
-      - --with-libiconv=/usr
+    buildsystem: cmake-ninja
     cleanup:
       - /bin
       - /include
