@@ -1,12 +1,14 @@
 diff --git a/src/Cafe/HW/Latte/Renderer/Vulkan/SwapchainInfoVk.cpp b/src/Cafe/HW/Latte/Renderer/Vulkan/SwapchainInfoVk.cpp
-index 13d21ea..59d45b6 100644
+index 13d21ea..e7483ce 100644
 --- a/src/Cafe/HW/Latte/Renderer/Vulkan/SwapchainInfoVk.cpp
 +++ b/src/Cafe/HW/Latte/Renderer/Vulkan/SwapchainInfoVk.cpp
-@@ -316,25 +316,41 @@ SwapchainInfoVk::SwapchainSupportDetails SwapchainInfoVk::QuerySwapchainSupport(
+@@ -316,25 +316,44 @@ SwapchainInfoVk::SwapchainSupportDetails SwapchainInfoVk::QuerySwapchainSupport(
  
  VkSurfaceFormatKHR SwapchainInfoVk::ChooseSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& formats) const
  {
 +	bool useSRGB = mainWindow ? LatteGPUState.tvBufferUsesSRGB : LatteGPUState.drcBufferUsesSRGB;
++
++	printf("mainWindow = %s, useSRGB = %s\n", mainWindow ? "true" : "false", useSRGB ? "true" : "false");
 +
  	if (formats.size() == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
 -		return{ VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
@@ -25,11 +27,12 @@ index 13d21ea..59d45b6 100644
  	{
 -		bool useSRGB = mainWindow ? LatteGPUState.tvBufferUsesSRGB : LatteGPUState.drcBufferUsesSRGB;
 -
++		printf("format %d, %d\n", format.format, format.colorSpace);
  		if (useSRGB)
  		{
  			if (format.format == VK_FORMAT_B8G8R8A8_SRGB && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
 +			{
-+				printf("selected, VK_FORMAT_B8G8R8A8_SRGB\n");
++				printf("selected\n");
  				return format;
 +			}
  		}
@@ -37,13 +40,13 @@ index 13d21ea..59d45b6 100644
  		{
  			if (format.format == VK_FORMAT_B8G8R8A8_UNORM && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
 +			{
-+				printf("selected, VK_FORMAT_B8G8R8A8_UNORM\n");
++				printf("selected\n");
  				return format;
 +			}
  		}
  	}
  
-+	printf("wildcard, %d %d\n", formats[0].format, formats[0].colorSpace);
++	printf("wildcard %d, %d\n", formats[0].format, formats[0].colorSpace);
  	return formats[0];
  }
  
