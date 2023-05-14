@@ -148,25 +148,6 @@ modules:
           project-id: 11526
           url-template: https://github.com/fmtlib/fmt/archive/$version.tar.gz
 
-  - name: wxwidgets
-    buildsystem: cmake-ninja
-    cleanup:
-      - /bin
-      - /include
-      - /lib/cmake
-      - /lib/wx
-      - /share
-    sources:
-      - type: git
-        url: https://github.com/wxWidgets/wxWidgets
-        tag: v3.2.2.1
-        commit: a812fffda3fe686c94e24bff27e8effd96e4de64
-        x-checker-data:
-          type: anitya
-          project-id: 5150
-          stable-only: true
-          tag-template: v$version
-
   - name: gamemode
     buildsystem: meson
     config-opts:
@@ -182,6 +163,23 @@ modules:
           project-id: 17410
           stable-only: true
           tag-template: $version
+
+  - name: wxwidgets
+    cleanup:
+      - /bin
+      - /include
+      - /lib/cmake
+      - /lib/wx
+      - /share
+    sources:
+      - type: archive
+        url: https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.2.1/wxWidgets-3.2.2.1.tar.bz2
+        sha256: dffcb6be71296fff4b7f8840eb1b510178f57aa2eb236b20da41182009242c02
+        x-checker-data:
+          type: anitya
+          project-id: 5150
+          stable-only: true
+          url-template: https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
 
   - name: Cemu
     buildsystem: cmake-ninja
