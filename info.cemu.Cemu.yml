@@ -195,6 +195,10 @@ modules:
           tag-pattern: ^v([\d.]+-\d+)$
         tag: v2.0-39
         commit: eda4cf4b241d56c5c16f6aa4d135b8a269676a76
+      - type: shell
+        commands:
+          - sed "s/set(EXPERIMENTAL_VERSION.*/set(EXPERIMENTAL_VERSION \"$(git describe
+            --tag | sed "s/v2.0-//")\" CACHE STRING \"\")/g" -i CMakeLists.txt
       - type: script
         commands:
           - |
