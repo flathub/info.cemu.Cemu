@@ -13,7 +13,6 @@ finish-args:
   - --share=ipc
   - --share=network
   - --env=LC_ALL=C
-  - --filesystem=host:ro
   - --filesystem=xdg-run/app/com.discordapp.Discord:ro
   - --filesystem=xdg-run/app/com.discordapp.DiscordCanary:ro
 
@@ -180,6 +179,8 @@ modules:
           project-id: 5150
           stable-only: true
           url-template: https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
+      - type: patch
+        path: wx_gtkchoosernative.patch
 
   - name: Cemu
     buildsystem: cmake-ninja
