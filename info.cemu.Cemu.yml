@@ -90,8 +90,8 @@ modules:
       - /lib/cmake
     sources:
       - type: archive
-        url: https://github.com/KhronosGroup/glslang/archive/12.1.0.tar.gz
-        sha256: 1515e840881d1128fb6d831308433f731808f818f2103881162f3ffd47b15cd5
+        url: https://github.com/KhronosGroup/glslang/archive/12.2.0.tar.gz
+        sha256: 870d17030fda7308c1521fb2e01a9e93cbe4b130bc8274e90d00e127432ab6f6
         x-checker-data:
           type: anitya
           stable-only: true
@@ -147,7 +147,7 @@ modules:
           type: anitya
           project-id: 11526
           url-template: https://github.com/fmtlib/fmt/archive/$version.tar.gz
-          versions: { <: '10.0' }
+          versions: {<: '10.0'}
 
   - name: gamemode
     buildsystem: meson
@@ -194,8 +194,8 @@ modules:
         x-checker-data:
           type: git
           tag-pattern: ^v([\d.]+-\d+)$
-        tag: v2.0-39
-        commit: eda4cf4b241d56c5c16f6aa4d135b8a269676a76
+        tag: v2.0-40
+        commit: 633e5c0e05852f1c7762797027ff0247424a57bd
       - type: shell
         commands:
           - sed "s/set(EXPERIMENTAL_VERSION.*/set(EXPERIMENTAL_VERSION \"$(git describe
