@@ -146,6 +146,7 @@ modules:
           type: anitya
           project-id: 11526
           url-template: https://github.com/fmtlib/fmt/archive/$version.tar.gz
+          versions: { <: '10.0' }
 
   - name: gamemode
     buildsystem: meson
