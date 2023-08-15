@@ -23,6 +23,21 @@ modules:
   - shared-modules/glu/glu-9.json
   - shared-modules/glew/glew.json
 
+  - shared-modules/libusb/libusb.json
+
+  - name: hidapi
+    buildsystem: cmake-ninja
+    sources:
+      - type: git
+        url: https://github.com/libusb/hidapi.git
+        tag: hidapi-0.14.0
+        commit: d3013f0af3f4029d82872c1a9487ea461a56dee4
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/libusb/hidapi/releases/latest
+          tag-query: .tag_name
+          timestamp-query: .published_at
+
   - name: pugixml
     buildsystem: cmake-ninja
     config-opts:
