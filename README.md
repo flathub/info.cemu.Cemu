@@ -31,7 +31,9 @@ Then load the new rule by running
 ```sh
 sudo udevadm control --reload-rules
 ```
+
 Disconnect and reconnect the Wiimote then restart Cemu. You should not be able to add the Wiimote as an input:
+
 ![Screenshot from 2023-08-30 23-02-20](https://github.com/flathub/info.cemu.Cemu/assets/334272/ab44f97f-8d63-4ed4-ad82-a4415311cf87)
 
 
