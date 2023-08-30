@@ -28,15 +28,14 @@ modules:
   - name: hidapi
     buildsystem: cmake-ninja
     sources:
-      - type: git
-        url: https://github.com/libusb/hidapi.git
-        tag: hidapi-0.14.0
-        commit: d3013f0af3f4029d82872c1a9487ea461a56dee4
+      - type: archive
+        url: https://github.com/libusb/hidapi/archive/refs/tags/hidapi-0.14.0.tar.gz
+        sha256: a5714234abe6e1f53647dd8cba7d69f65f71c558b7896ed218864ffcf405bcbd
         x-checker-data:
-          type: json
-          url: https://api.github.com/repos/libusb/hidapi/releases/latest
-          tag-query: .tag_name
-          timestamp-query: .published_at
+          type: anitya
+          project-id: 5594
+          stable-only: true
+          url-template: https://github.com/libusb/hidapi/archive/refs/tags/hidapi-$version.tar.gz
 
   - name: pugixml
     buildsystem: cmake-ninja
@@ -90,7 +89,9 @@ modules:
     sources:
       - type: archive
         url: https://libzip.org/download/libzip-1.10.1.tar.xz
-        sha256: 6d9ad40d2f9cd204c9e28c8a406e46289c0e887533c5174f4a38cf504fe1870e
+        mirror-urls:
+          - https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.xz
+        sha256: dc3c8d5b4c8bbd09626864f6bcf93de701540f761d76b85d7c7d710f4bd90318
         x-checker-data:
           type: anitya
           project-id: 10649
