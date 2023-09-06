@@ -1,6 +1,6 @@
 app-id: info.cemu.Cemu
 runtime: org.freedesktop.Platform
-runtime-version: '22.08'
+runtime-version: '23.08'
 sdk: org.freedesktop.Sdk
 
 command: Cemu-wrapper
@@ -172,15 +172,16 @@ modules:
       - -Dwith-sd-bus-provider=no-daemon
       - -Dwith-examples=false
     sources:
-      - type: git
-        url: https://github.com/FeralInteractive/gamemode
-        commit: 4dc99dff76218718763a6b07fc1900fa6d1dafd9
-        tag: '1.7'
+      - type: archive
+        url: https://github.com/FeralInteractive/gamemode/releases/download/1.7/gamemode-1.7.tar.xz
+        sha256: c1860f76f1d4c0d6e3965e52de21c824f24791049946da728da50f0c63748389
         x-checker-data:
           type: anitya
           project-id: 17410
           stable-only: true
-          tag-template: $version
+          url-template: https://github.com/FeralInteractive/gamemode/releases/download/$version/gamemode-$version.tar.xz
+      - type: patch
+        path: gamemode-pidfd-open.patch
 
   - name: wxwidgets
     cleanup:
