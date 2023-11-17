@@ -50,3 +50,21 @@ This can be done permanently with [flatseal](https://flathub.org/apps/details/co
 ```sh
 flatpak override --user --filesystem=host info.cemu.Cemu
 ```
+
+## More udev rules
+
+Create a udev rules file at `/etc/udev/rules.d/50-cemu.rules` containing the following:
+```sh
+# Bluetooth Wiimote
+KERNEL=="hidraw*", KERNELS=="*057E:0306*", TAG+="uaccess"
+
+# PS4 LEGO Toypad
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0e6f", ATTRS{idProduct}=="0241", MODE="0666", TAG+="uaccess"
+```
+
+Then load the new rule by running
+```sh
+sudo udevadm control --reload-rules
+```
+
+Disconnect and reconect the device then restart Cemu.
