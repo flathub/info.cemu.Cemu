@@ -190,8 +190,6 @@ modules:
           project-id: 17410
           stable-only: true
           url-template: https://github.com/FeralInteractive/gamemode/releases/download/$version/gamemode-$version.tar.xz
-      - type: patch
-        path: gamemode-pidfd-open.patch
 
   - name: wxWidgets
     buildsystem: cmake-ninja
