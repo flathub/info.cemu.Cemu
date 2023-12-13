@@ -183,8 +183,8 @@ modules:
       - -Dwith-examples=false
     sources:
       - type: archive
-        url: https://github.com/FeralInteractive/gamemode/releases/download/1.8/gamemode-1.8.tar.xz
-        sha256: 7182149315544da69371c3cee2525f29d46a877446b6d78d807f839a9b45f75e
+        url: https://github.com/FeralInteractive/gamemode/releases/download/1.8.1/gamemode-1.8.1.tar.xz
+        sha256: cdb117d05d65dbd03c0bd2104df874a1f878db8f23cc4d55bfa44e832482269e
         x-checker-data:
           type: anitya
           project-id: 17410
