@@ -16,7 +16,6 @@ finish-args:
   - --filesystem=host:ro
   - --filesystem=xdg-run/app/com.discordapp.Discord:ro
   - --filesystem=xdg-run/app/com.discordapp.DiscordCanary:ro
-  - --filesystem=xdg-config/gtk-3.0:ro
 
 modules:
 # Required so we can use wxWidgets with openGL integration
