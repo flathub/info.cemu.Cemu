@@ -222,8 +222,8 @@ modules:
         x-checker-data:
           type: git
           tag-pattern: ^v([\d.]+-\d+)$
-        tag: v2.0-75
-        commit: 74e8d205b07247b851c716ad285d938f4bc277b5
+        tag: v2.0-77
+        commit: 84cad8b280afa9db7637ec1fd125d1b59970b548
       - type: shell
         commands:
           - sed "s/set(EXPERIMENTAL_VERSION.*/set(EXPERIMENTAL_VERSION \"$(git describe
