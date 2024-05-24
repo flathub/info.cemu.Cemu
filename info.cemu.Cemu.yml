@@ -232,6 +232,7 @@ modules:
       - type: git
         url: https://github.com/Exzap/ZArchive
         dest: dependencies/ZArchive
+        tag: v0.1.2
       - type: git
         url: https://github.com/ocornut/imgui
         dest: dependencies/imgui
