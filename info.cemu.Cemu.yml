@@ -224,6 +224,18 @@ modules:
           tag-pattern: ^v([\d.]+-\d+)$
         tag: v2.0-82
         commit: 7d6d4173549a55070683feac33afaad038383813
+        disable-submodules: true
+      - type: git
+        url: https://github.com/mozilla/cubeb
+        commit: 6c1a6e151c1f981a2800d40af7c041cfcccc710e
+        dest: dependencies/cubeb
+      - type: git
+        url: https://github.com/Exzap/ZArchive
+        dest: dependencies/ZArchive
+      - type: git
+        url: https://github.com/ocornut/imgui
+        dest: dependencies/imgui
+        commit: f65bcf481ab34cd07d3909aab1479f409fa79f2f
       - type: shell
         commands:
           - sed "s/set(EXPERIMENTAL_VERSION.*/set(EXPERIMENTAL_VERSION \"$(git describe
