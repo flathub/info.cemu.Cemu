@@ -239,8 +239,10 @@ modules:
         commit: f65bcf481ab34cd07d3909aab1479f409fa79f2f
       - type: shell
         commands:
-          - sed "s/set(EXPERIMENTAL_VERSION.*/set(EXPERIMENTAL_VERSION \"$(git describe
-            --tag | sed "s/v2.0-//")\" CACHE STRING \"\")/g" -i CMakeLists.txt
+          - sed -i -E "
+            s/set\(EMULATOR_VERSION_MAJOR .*/set(EMULATOR_VERSION_MAJOR \"$(git describe --tag | sed -E 's/v([0-9]+)\..*/\1/')\" CACHE STRING \"\")/g;
+            s/set\(EMULATOR_VERSION_MINOR .*/set(EMULATOR_VERSION_MINOR \"$(git describe --tag | sed -E 's/v[0-9]+\.([0-9]+).*/\1/')\" CACHE STRING \"\")/g
+            " CMakeLists.txt
       - type: script
         commands:
           - |
