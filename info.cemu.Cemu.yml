@@ -218,10 +218,13 @@ modules:
     sources:
       - type: git
         url: https://github.com/cemu-project/Cemu
-        # TODO: Update tag pattern on next stable ^v([\d.]+)$
         x-checker-data:
-          type: git
-          tag-pattern: ^v([\d.]+-\d+)$
+          is-main-source: true
+          type: json
+          url: https://api.github.com/repos/cemu-project/Cemu/releases/latest
+          version-query: .tag_name | sub("^v"; "")
+          timestamp-query: .published_at
+          tag-query: .tag_name
         tag: v2.1
         commit: 1234e2c11808a97c76381f147e564d74f6ffbbd1
         disable-submodules: true
@@ -239,9 +242,10 @@ modules:
         commit: f65bcf481ab34cd07d3909aab1479f409fa79f2f
       - type: shell
         commands:
-          - sed -i -E "
-            s/set\(EMULATOR_VERSION_MAJOR .*/set(EMULATOR_VERSION_MAJOR \"$(git describe --tag | sed -E 's/v([0-9]+)\..*/\1/')\" CACHE STRING \"\")/g;
-            s/set\(EMULATOR_VERSION_MINOR .*/set(EMULATOR_VERSION_MINOR \"$(git describe --tag | sed -E 's/v[0-9]+\.([0-9]+).*/\1/')\" CACHE STRING \"\")/g
+          - sed -i -E " s/set\(EMULATOR_VERSION_MAJOR .*/set(EMULATOR_VERSION_MAJOR
+            \"$(git describe --tag | sed -E 's/v([0-9]+)\..*/\1/')\" CACHE STRING
+            \"\")/g; s/set\(EMULATOR_VERSION_MINOR .*/set(EMULATOR_VERSION_MINOR \"$(git
+            describe --tag | sed -E 's/v[0-9]+\.([0-9]+).*/\1/')\" CACHE STRING \"\")/g
             " CMakeLists.txt
       - type: script
         commands:
@@ -283,8 +287,8 @@ modules:
       - cp -r bin/resources ${FLATPAK_DEST}/share/Cemu/
       - AS_META_DATE="$(git log -1 --format=%ci | awk '{print $1}')" AS_META_FILE='dist/linux/info.cemu.Cemu.metainfo.xml'
         AS_META_URL="https://github.com/cemu-project/Cemu/releases/tag/$(git describe
-        --tags)" AS_META_TYPE='stable' AS_META_VERSION="$(git describe --tags
-        | tr -d 'v')" python ./dev_release_metainfo.py
+        --tags)" AS_META_TYPE='stable' AS_META_VERSION="$(git describe --tags | tr
+        -d 'v')" python ./dev_release_metainfo.py
       - install -Dm644 -t ${FLATPAK_DEST}/share/appdata/ dist/linux/info.cemu.Cemu.metainfo.xml
       - install -Dm644 -t ${FLATPAK_DEST}/share/applications/ dist/linux/info.cemu.Cemu.desktop
       - install -Dm644 -t ${FLATPAK_DEST}/share/icons/hicolor/128x128/apps/ dist/linux/info.cemu.Cemu.png
