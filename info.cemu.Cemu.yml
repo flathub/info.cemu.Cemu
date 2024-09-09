@@ -1,6 +1,6 @@
 app-id: info.cemu.Cemu
 runtime: org.freedesktop.Platform
-runtime-version: '23.08'
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 
 command: Cemu-wrapper
@@ -146,6 +146,8 @@ modules:
           project-id: 7422
           stable-only: true
           url-template: https://github.com/Tencent/rapidjson/archive/refs/tags/v$version.tar.gz
+      - type: patch
+        path: rapidjson_3b2441b8.patch
 
   - name: glm
     buildsystem: cmake-ninja
@@ -176,21 +178,6 @@ modules:
           url-template: https://github.com/fmtlib/fmt/archive/$version.tar.gz
           versions: {<: '10.0'}
 
-  - name: gamemode
-    buildsystem: meson
-    config-opts:
-      - -Dwith-sd-bus-provider=no-daemon
-      - -Dwith-examples=false
-    sources:
-      - type: archive
-        url: https://github.com/FeralInteractive/gamemode/releases/download/1.8.2/gamemode-1.8.2.tar.xz
-        sha256: 1169f294424c566988a0cab8c543f0aecec360ecb8ce2f91abc1460b1c59a439
-        x-checker-data:
-          type: anitya
-          project-id: 17410
-          stable-only: true
-          url-template: https://github.com/FeralInteractive/gamemode/releases/download/$version/gamemode-$version.tar.xz
-
   - name: wxWidgets
     buildsystem: cmake-ninja
     cleanup:
@@ -218,13 +205,16 @@ modules:
     sources:
       - type: git
         url: https://github.com/cemu-project/Cemu
-        # TODO: Update tag pattern on next stable ^v([\d.]+)$
-        x-checker-data:
-          type: git
-          tag-pattern: ^v([\d.]+-\d+)$
         tag: v2.1
         commit: 1234e2c11808a97c76381f147e564d74f6ffbbd1
         disable-submodules: true
+        x-checker-data:
+          is-main-source: true
+          type: json
+          url: https://api.github.com/repos/cemu-project/Cemu/releases/latest
+          version-query: .tag_name | sub("^v"; "")
+          timestamp-query: .published_at
+          tag-query: .tag_name
       - type: git
         url: https://github.com/mozilla/cubeb
         commit: 6c1a6e151c1f981a2800d40af7c041cfcccc710e
@@ -239,9 +229,10 @@ modules:
         commit: f65bcf481ab34cd07d3909aab1479f409fa79f2f
       - type: shell
         commands:
-          - sed -i -E "
-            s/set\(EMULATOR_VERSION_MAJOR .*/set(EMULATOR_VERSION_MAJOR \"$(git describe --tag | sed -E 's/v([0-9]+)\..*/\1/')\" CACHE STRING \"\")/g;
-            s/set\(EMULATOR_VERSION_MINOR .*/set(EMULATOR_VERSION_MINOR \"$(git describe --tag | sed -E 's/v[0-9]+\.([0-9]+).*/\1/')\" CACHE STRING \"\")/g
+          - sed -i -E " s/set\(EMULATOR_VERSION_MAJOR .*/set(EMULATOR_VERSION_MAJOR
+            \"$(git describe --tag | sed -E 's/v([0-9]+)\..*/\1/')\" CACHE STRING
+            \"\")/g; s/set\(EMULATOR_VERSION_MINOR .*/set(EMULATOR_VERSION_MINOR \"$(git
+            describe --tag | sed -E 's/v[0-9]+\.([0-9]+).*/\1/')\" CACHE STRING \"\")/g
             " CMakeLists.txt
       - type: script
         commands:
@@ -283,8 +274,8 @@ modules:
       - cp -r bin/resources ${FLATPAK_DEST}/share/Cemu/
       - AS_META_DATE="$(git log -1 --format=%ci | awk '{print $1}')" AS_META_FILE='dist/linux/info.cemu.Cemu.metainfo.xml'
         AS_META_URL="https://github.com/cemu-project/Cemu/releases/tag/$(git describe
-        --tags)" AS_META_TYPE='stable' AS_META_VERSION="$(git describe --tags
-        | tr -d 'v')" python ./dev_release_metainfo.py
+        --tags)" AS_META_TYPE='stable' AS_META_VERSION="$(git describe --tags | tr
+        -d 'v')" python ./dev_release_metainfo.py
       - install -Dm644 -t ${FLATPAK_DEST}/share/appdata/ dist/linux/info.cemu.Cemu.metainfo.xml
       - install -Dm644 -t ${FLATPAK_DEST}/share/applications/ dist/linux/info.cemu.Cemu.desktop
       - install -Dm644 -t ${FLATPAK_DEST}/share/icons/hicolor/128x128/apps/ dist/linux/info.cemu.Cemu.png
