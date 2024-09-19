@@ -93,34 +93,6 @@ modules:
           project-id: 10649
           url-template: https://libzip.org/download/libzip-$version.tar.xz
 
-  - name: glslang
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DENABLE_CTEST=OFF
-      # TODO: Does Cemu benefit from SPIRV-Tools-opt
-      - -DENABLE_OPT=OFF
-    cleanup:
-      - /include
-      - /lib/cmake
-    sources:
-      - type: archive
-        url: https://github.com/KhronosGroup/glslang/archive/14.3.0.tar.gz
-        sha256: be6339048e20280938d9cb399fcdd06e04f8654d43e170e8cce5a56c9a754284
-        x-checker-data:
-          type: anitya
-          stable-only: true
-          project-id: 205796
-          url-template: https://github.com/KhronosGroup/glslang/archive/$version.tar.gz
-      # - type: git
-      #   url: https://github.com/KhronosGroup/SPIRV-Tools.git
-      #   tag: sdk-1.3.261.1
-      #   dest: External/spirv-tools
-      # - type: git
-      #   url: https://github.com/KhronosGroup/SPIRV-Headers.git
-      #   tag: sdk-1.3.261.1
-      #   dest: External/spirv-tools/external/spirv-headers
-
   - name: rapidjson
     buildsystem: cmake-ninja
     config-opts:
@@ -176,6 +148,28 @@ modules:
 
   - name: wxWidgets
     buildsystem: cmake-ninja
+    config-opts:
+      - -DwxUSE_DOC_VIEW_ARCHITECTURE=OFF
+      - -DwxUSE_HELP=OFF
+      #- -DwxUSE_HTML=OFF
+      - -DwxUSE_RICHTEXT=OFF
+      - -DwxUSE_WEBVIEW=OFF
+      - -DwxUSE_STC=OFF
+      - -DwxUSE_MDI_ARCHITECTURE=OFF
+      - -DwxUSE_MDI=OFF
+      - -DwxUSE_ARCHIVE_STREAMS=OFF
+      - -DwxUSE_ACTIVEX=OFF
+      - -DwxUSE_MEDIACTRL=OFF
+      - -DwxUSE_WEBREQUEST=OFF
+      - -DwxUSE_SECRETSTORE=OFF
+      - -DwxUSE_SOUND=OFF
+      - -DwxUSE_LIBSDL=OFF
+      - -DwxUSE_RIBBON=OFF
+      - -DwxUSE_SVG=OFF
+      - -DwxUSE_WXHTML_HELP=OFF
+      - -DwxUSE_PROPGRID=ON
+      - -DwxUSE_OPENGL=ON
+      - -DwxUSE_XRC=ON
     cleanup:
       - /bin
       - /include
@@ -191,6 +185,18 @@ modules:
           project-id: 5150
           stable-only: true
           url-template: https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
+
+  - name: spirv-tools
+    buildsystem: cmake-ninja
+    sources:
+      - type: git
+        url: https://github.com/KhronosGroup/SPIRV-Tools.git
+        tag: v2024.1
+        commit: 04896c462d9f3f504c99a4698605b6524af813c1
+      - type: git
+        url: https://github.com/KhronosGroup/SPIRV-Headers.git
+        commit: 4f7b471f1a66b6d06462cd4ba57628cc0cd087d7
+        dest: external/spirv-headers
 
   - name: Cemu
     buildsystem: cmake-ninja
