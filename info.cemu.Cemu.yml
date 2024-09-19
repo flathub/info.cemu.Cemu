@@ -32,6 +32,10 @@ modules:
           project-id: 5594
           stable-only: true
           url-template: https://github.com/libusb/hidapi/archive/refs/tags/hidapi-$version.tar.gz
+    cleanup:
+      - /include
+      - /lib/cmake
+      - /lib/pkgconfig
 
   - name: pugixml
     buildsystem: cmake-ninja
@@ -197,6 +201,10 @@ modules:
         url: https://github.com/KhronosGroup/SPIRV-Headers.git
         commit: 4f7b471f1a66b6d06462cd4ba57628cc0cd087d7
         dest: external/spirv-headers
+    cleanup:
+      - /bin
+      - /include
+      - /lib
 
   - name: Cemu
     buildsystem: cmake-ninja
