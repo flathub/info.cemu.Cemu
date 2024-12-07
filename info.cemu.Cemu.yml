@@ -88,10 +88,10 @@ modules:
       - /lib/pkgconfig
     sources:
       - type: archive
-        url: https://libzip.org/download/libzip-1.11.1.tar.xz
+        url: https://libzip.org/download/libzip-1.11.2.tar.xz
         mirror-urls:
           - https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.xz
-        sha256: 721e0e4e851073b508c243fd75eda04e4c5006158a900441de10ce274cc3b633
+        sha256: 5d471308cef4c4752bbcf973d9cd37ba4cb53739116c30349d4764ba1410dfc1
         x-checker-data:
           type: anitya
           project-id: 10649
@@ -214,8 +214,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/cemu-project/Cemu
-        tag: v2.2
-        commit: 1a4d9660e756f52a01589add71df619361543a2f
+        tag: v2.4
+        commit: 6f9f3d52ea12d3951b2d9d71806f18fea46140e3
         disable-submodules: true
         x-checker-data:
           is-main-source: true
