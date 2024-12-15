@@ -73,6 +73,7 @@ modules:
           project-id: 6845
           stable-only: true
           url-template: https://boostorg.jfrog.io/artifactory/main/release/$version/source/boost_${major}_${minor}_$patch.tar.bz2
+          versions: {'!=': 1.87.0}
 
   - name: libzip
     buildsystem: cmake-ninja
@@ -134,22 +135,6 @@ modules:
         url: https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip
         sha256: 37e2a3d62ea3322e43593c34bae29f57e3e251ea89f4067506c94043769ade4c
 
-  - name: fmt
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DFMT_TEST=Off
-    cleanup:
-      - '*'
-    sources:
-      - type: archive
-        url: https://github.com/fmtlib/fmt/archive/9.1.0.tar.gz
-        sha256: 5dea48d1fcddc3ec571ce2058e13910a0d4a6bab4cc09a809d8b1dd1c88ae6f2
-        x-checker-data:
-          type: anitya
-          project-id: 11526
-          url-template: https://github.com/fmtlib/fmt/archive/$version.tar.gz
-          versions: {<: '10.0'}
-
   - name: wxWidgets
     buildsystem: cmake-ninja
     config-opts:
@@ -199,6 +184,7 @@ modules:
         commit: 04896c462d9f3f504c99a4698605b6524af813c1
       - type: git
         url: https://github.com/KhronosGroup/SPIRV-Headers.git
+        tag: vulkan-sdk-1.3.283.0
         commit: 4f7b471f1a66b6d06462cd4ba57628cc0cd087d7
         dest: external/spirv-headers
     cleanup:
@@ -226,7 +212,7 @@ modules:
           tag-query: .tag_name
       - type: git
         url: https://github.com/mozilla/cubeb
-        commit: 6c1a6e151c1f981a2800d40af7c041cfcccc710e
+        commit: 2071354a69aca7ed6df3b4222e305746c2113f60
         dest: dependencies/cubeb
       - type: git
         url: https://github.com/Exzap/ZArchive
