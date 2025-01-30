@@ -47,8 +47,8 @@ modules:
       - /lib/pkgconfig
     sources:
       - type: archive
-        url: https://github.com/zeux/pugixml/releases/download/v1.14/pugixml-1.14.tar.gz
-        sha256: 2f10e276870c64b1db6809050a75e11a897a8d7456c4be5c6b2e35a11168a015
+        url: https://github.com/zeux/pugixml/releases/download/v1.15/pugixml-1.15.tar.gz
+        sha256: 655ade57fa703fb421c2eb9a0113b5064bddb145d415dd1f88c79353d90d511a
         x-checker-data:
           type: anitya
           project-id: 3728
@@ -89,10 +89,10 @@ modules:
       - /lib/pkgconfig
     sources:
       - type: archive
-        url: https://libzip.org/download/libzip-1.11.2.tar.xz
+        url: https://libzip.org/download/libzip-1.11.3.tar.xz
         mirror-urls:
           - https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.xz
-        sha256: 5d471308cef4c4752bbcf973d9cd37ba4cb53739116c30349d4764ba1410dfc1
+        sha256: 9509d878ba788271c8b5abca9cfde1720f075335686237b7e9a9e7210fe67c1b
         x-checker-data:
           type: anitya
           project-id: 10649
