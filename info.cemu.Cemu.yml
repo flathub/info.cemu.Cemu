@@ -104,23 +104,15 @@ modules:
       - -DRAPIDJSON_BUILD_DOC=OFF
       - -DRAPIDJSON_BUILD_EXAMPLES=OFF
       - -DRAPIDJSON_BUILD_TESTS=OFF
-      - -DRAPIDJSON_BUILD_THIRDPARTY_GTEST=OFF
     cleanup:
       - /include
       - /lib/cmake
       - /lib/pkgconfig
       - /share/doc
     sources:
-      - type: archive
-        url: https://github.com/Tencent/rapidjson/archive/refs/tags/v1.1.0.tar.gz
-        sha256: bf7ced29704a1e696fbccf2a2b4ea068e7774fa37f6d7dd4039d0787f8bed98e
-        x-checker-data:
-          type: anitya
-          project-id: 7422
-          stable-only: true
-          url-template: https://github.com/Tencent/rapidjson/archive/refs/tags/v$version.tar.gz
-      - type: patch
-        path: rapidjson_3b2441b8.patch
+      - type: git
+        url: https://github.com/Tencent/rapidjson.git
+        commit: a95e013b97ca6523f32da23f5095fcc9dd6067e5
 
   - name: glm
     buildsystem: cmake-ninja
