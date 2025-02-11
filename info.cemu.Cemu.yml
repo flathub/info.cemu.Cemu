@@ -192,8 +192,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/cemu-project/Cemu
-        tag: v2.4
-        commit: 6f9f3d52ea12d3951b2d9d71806f18fea46140e3
+        tag: v2.5
+        commit: dd0af0a56fa3c6b8a82f60c19e67bbe06d673d0e
         disable-submodules: true
         x-checker-data:
           is-main-source: true
