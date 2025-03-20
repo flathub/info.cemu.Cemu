@@ -133,7 +133,7 @@ modules:
       - -DwxUSE_DOC_VIEW_ARCHITECTURE=OFF
       - -DwxUSE_HELP=OFF
       #- -DwxUSE_HTML=OFF
-      - -DwxUSE_RICHTEXT=OFF
+      - -DwxUSE_RICHTEXT=ON
       - -DwxUSE_WEBVIEW=OFF
       - -DwxUSE_STC=OFF
       - -DwxUSE_MDI_ARCHITECTURE=OFF
