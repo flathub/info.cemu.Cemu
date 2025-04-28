@@ -67,4 +67,4 @@ Then load the new rule by running
 sudo udevadm control --reload-rules
 ```
 
-Disconnect and reconect the device then restart Cemu.
+Disconnect and reconnect the device then restart Cemu.
