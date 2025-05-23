@@ -89,10 +89,10 @@ modules:
       - /lib/pkgconfig
     sources:
       - type: archive
-        url: https://libzip.org/download/libzip-1.11.3.tar.xz
+        url: https://libzip.org/download/libzip-1.11.4.tar.xz
         mirror-urls:
           - https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.xz
-        sha256: 9509d878ba788271c8b5abca9cfde1720f075335686237b7e9a9e7210fe67c1b
+        sha256: 8a247f57d1e3e6f6d11413b12a6f28a9d388de110adc0ec608d893180ed7097b
         x-checker-data:
           type: anitya
           project-id: 10649
