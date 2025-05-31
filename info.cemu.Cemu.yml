@@ -187,7 +187,7 @@ modules:
   - name: Cemu
     buildsystem: cmake-ninja
     config-opts:
-      - -DPORTABLE=false
+      - -DALLOW_PORTABLE=false
       - -DENABLE_VCPKG=false
     sources:
       - type: git
