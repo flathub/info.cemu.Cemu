@@ -159,8 +159,8 @@ modules:
       - /share
     sources:
       - type: archive
-        url: https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.8.1/wxWidgets-3.2.8.1.tar.bz2
-        sha256: ad0cf6c18815dcf1a6a89ad3c3d21a306cd7b5d99a602f77372ef1d92cb7d756
+        url: https://github.com/wxWidgets/wxWidgets/releases/download/v3.3.0/wxWidgets-3.3.0.tar.bz2
+        sha256: 492f5eb8a58715f2602f31025c3eaa20d71a3ec8e052c7a9d33153966b4badca
         x-checker-data:
           type: anitya
           project-id: 5150
