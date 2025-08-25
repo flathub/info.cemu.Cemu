@@ -189,8 +189,9 @@ modules:
   - name: Cemu
     buildsystem: cmake-ninja
     config-opts:
-      - -DALLOW_PORTABLE=false
-      - -DENABLE_VCPKG=false
+      - -DALLOW_PORTABLE=OFF
+      - -DENABLE_VCPKG=OFF
+      - -Cfp_version_cache.txt
     sources:
       - type: git
         url: https://github.com/cemu-project/Cemu
@@ -216,13 +217,6 @@ modules:
         url: https://github.com/ocornut/imgui
         dest: dependencies/imgui
         commit: f65bcf481ab34cd07d3909aab1479f409fa79f2f
-      - type: shell
-        commands:
-          - sed -i -E " s/set\(EMULATOR_VERSION_MAJOR .*/set(EMULATOR_VERSION_MAJOR
-            \"$(git describe --tag | sed -E 's/v([0-9]+)\..*/\1/')\" CACHE STRING
-            \"\")/g; s/set\(EMULATOR_VERSION_MINOR .*/set(EMULATOR_VERSION_MINOR \"$(git
-            describe --tag | sed -E 's/v[0-9]+\.([0-9]+).*/\1/')\" CACHE STRING \"\")/g
-            " CMakeLists.txt
       - type: script
         commands:
           - |
@@ -258,13 +252,33 @@ modules:
             el_release.attrib['version'] = version
             ET.indent(tree, space='  ', level=0)
             tree.write(meta_file, encoding='utf8')
+      - type: shell
+        commands:
+          - |
+            echo "Attempt to derive version number"
+            TAG="$(git describe --tag)"
+            RC="$?"; if [ $RC -ne 0 ]; then exit $RC; fi
+            VER="$(echo "${TAG}" | sed -E 's/v([0-9]+).([0-9]+)(-([0-9]+).*)?/\1\t\2\t\4/g')"
+            echo "${VER}"
+            AS_META_VERSION="$(echo "${VER}" | awk -F '\t' '{print $1 ($2 ? "."$2 ($3 ? "~"$3 : "") : "")}')"
+            echo "${AS_META_VERSION}"
+            AS_META_DATE="$(git log -1 --format=%ci | awk '{print $1}')"
+            AS_META_TYPE="$(echo "${VER}" | awk -F '\t' '{print ($3 ? "development" : "stable")}')"
+            if [ "$AS_META_TYPE" = "stable" ]; then
+              AS_META_URL="https://github.com/cemu-project/Cemu/releases/tag/${TAG}"
+            else
+              AS_META_URL="https://github.com/cemu-project/Cemu/commit/$(git rev-parse HEAD)"
+            fi
+            tee fp_version_cache.txt <<CacheFile
+            set(EMULATOR_VERSION_MAJOR "$(echo "${VER}" | cut -f1)" CACHE STRING "")
+            set(EMULATOR_VERSION_MINOR "$(echo "${VER}" | cut -f2)" CACHE STRING "")
+            set(EMULATOR_VERSION_PATCH "$(echo "${VER}" | awk -F '\t' '{print $3 ? $3 : "0"}')" CACHE STRING "")
+            CacheFile
+            export AS_META_{VERSION,DATE,TYPE,FILE,URL}
+            AS_META_FILE='dist/linux/info.cemu.Cemu.metainfo.xml' python ./dev_release_metainfo.py
     post-install:
       - cp -r bin/gameProfiles ${FLATPAK_DEST}/share/Cemu/
       - cp -r bin/resources ${FLATPAK_DEST}/share/Cemu/
-      - AS_META_DATE="$(git log -1 --format=%ci | awk '{print $1}')" AS_META_FILE='dist/linux/info.cemu.Cemu.metainfo.xml'
-        AS_META_URL="https://github.com/cemu-project/Cemu/releases/tag/$(git describe
-        --tags)" AS_META_TYPE='stable' AS_META_VERSION="$(git describe --tags | tr
-        -d 'v')" python ./dev_release_metainfo.py
       - install -Dm644 -t ${FLATPAK_DEST}/share/appdata/ dist/linux/info.cemu.Cemu.metainfo.xml
       - install -Dm644 -t ${FLATPAK_DEST}/share/applications/ dist/linux/info.cemu.Cemu.desktop
       - install -Dm644 -t ${FLATPAK_DEST}/share/icons/hicolor/128x128/apps/ dist/linux/info.cemu.Cemu.png
