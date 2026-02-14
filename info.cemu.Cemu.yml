@@ -1,6 +1,6 @@
 app-id: info.cemu.Cemu
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 
 command: Cemu-wrapper
@@ -103,6 +103,7 @@ modules:
   - name: rapidjson
     buildsystem: cmake-ninja
     config-opts:
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       - -DRAPIDJSON_BUILD_DOC=OFF
       - -DRAPIDJSON_BUILD_EXAMPLES=OFF
       - -DRAPIDJSON_BUILD_TESTS=OFF
@@ -118,6 +119,8 @@ modules:
 
   - name: glm
     buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
     cleanup: ['*']
     no-make-install: true
     post-install:
@@ -189,6 +192,7 @@ modules:
   - name: Cemu
     buildsystem: cmake-ninja
     config-opts:
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       - -DALLOW_PORTABLE=OFF
       - -DENABLE_VCPKG=OFF
       - -Cfp_version_cache.txt
