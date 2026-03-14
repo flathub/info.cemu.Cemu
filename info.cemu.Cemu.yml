@@ -1,9 +1,13 @@
 app-id: info.cemu.Cemu
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 
 command: Cemu-wrapper
+
+build-options:
+  env:
+    CMAKE_POLICY_VERSION_MINIMUM: '3.5'
 
 finish-args:
   - --device=all
@@ -21,8 +25,6 @@ finish-args:
   - --filesystem=xdg-run/gamescope-0:ro
 
 modules:
-  - shared-modules/libusb/libusb.json
-
   - name: hidapi
     buildsystem: cmake-ninja
     sources:
@@ -169,23 +171,6 @@ modules:
           stable-only: true
           url-template: https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
 
-  - name: spirv-tools
-    buildsystem: cmake-ninja
-    sources:
-      - type: git
-        url: https://github.com/KhronosGroup/SPIRV-Tools.git
-        tag: v2024.1
-        commit: 04896c462d9f3f504c99a4698605b6524af813c1
-      - type: git
-        url: https://github.com/KhronosGroup/SPIRV-Headers.git
-        tag: vulkan-sdk-1.3.283.0
-        commit: 4f7b471f1a66b6d06462cd4ba57628cc0cd087d7
-        dest: external/spirv-headers
-    cleanup:
-      - /bin
-      - /include
-      - /lib
-
   - name: Cemu
     buildsystem: cmake-ninja
     config-opts:
@@ -213,6 +198,7 @@ modules:
         url: https://github.com/Exzap/ZArchive
         dest: dependencies/ZArchive
         tag: v0.1.2
+        commit: d2c717730092c7bf8cbb033b12fd4001b7c4d932
       - type: git
         url: https://github.com/ocornut/imgui
         dest: dependencies/imgui
