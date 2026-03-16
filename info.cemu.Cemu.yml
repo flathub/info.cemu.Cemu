@@ -77,7 +77,6 @@ modules:
           project-id: 6845
           stable-only: true
           url-template: https://archives.boost.org/release/$version/source/boost_${major}_${minor}_${patch}.tar.bz2
-          versions: {'!=': 1.87.0}
 
   - name: libzip
     buildsystem: cmake-ninja
@@ -170,6 +169,7 @@ modules:
           project-id: 5150
           stable-only: true
           url-template: https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
+          versions: {'<': 3.3.0}
 
   - name: Cemu
     buildsystem: cmake-ninja
