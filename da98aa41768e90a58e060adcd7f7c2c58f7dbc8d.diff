@@ -1,0 +1,150 @@
+diff --git a/src/gui/EmulatedUSBDevices/EmulatedUSBDeviceFrame.cpp b/src/gui/EmulatedUSBDevices/EmulatedUSBDeviceFrame.cpp
+index 2186f8eace..53e3b9958b 100644
+--- a/src/gui/EmulatedUSBDevices/EmulatedUSBDeviceFrame.cpp
++++ b/src/gui/EmulatedUSBDevices/EmulatedUSBDeviceFrame.cpp
+@@ -283,7 +283,7 @@ void EmulatedUSBDeviceFrame::LoadSkylanderPath(uint8 slot, wxString path)
+ 	std::unique_ptr<FileStream> skyFile(FileStream::openFile2(_utf8ToPath(path.utf8_string()), true));
+ 	if (!skyFile)
+ 	{
+-		wxMessageDialog open_error(this, "Error Opening File: " + path.c_str());
++		wxMessageDialog open_error(this, "Error Opening File: " + path);
+ 		open_error.ShowModal();
+ 		return;
+ 	}
+diff --git a/src/gui/TitleManager.cpp b/src/gui/TitleManager.cpp
+index 1dd41b3b1c..67f13e05e2 100644
+--- a/src/gui/TitleManager.cpp
++++ b/src/gui/TitleManager.cpp
+@@ -356,7 +356,7 @@ void TitleManager::OnTitleSearchComplete(wxCommandEvent& event)
+ 
+ void TitleManager::OnSetStatusBarText(wxSetStatusBarTextEvent& event)
+ {
+-	m_status_bar->SetStatusText(_(event.GetText()), event.GetNumber());
++	m_status_bar->SetStatusText(event.GetText(), event.GetNumber());
+ }
+ 
+ void TitleManager::OnFilterChanged(wxCommandEvent& event)
+diff --git a/src/gui/components/wxTitleManagerList.cpp b/src/gui/components/wxTitleManagerList.cpp
+index 2f4a9ed1b7..a5774b144b 100644
+--- a/src/gui/components/wxTitleManagerList.cpp
++++ b/src/gui/components/wxTitleManagerList.cpp
+@@ -576,7 +576,7 @@ void wxTitleManagerList::OnConvertToCompressedFormat(uint64 titleId, uint64 righ
+ 		}
+ 		else
+ 		{
+-			progressDialog.Update(0, _("Collecting list of files..." + fmt::format(" ({})", writerContext.totalFileCount.load())));
++			progressDialog.Update(0, _("Collecting list of files...") + fmt::format(" ({})", writerContext.totalFileCount.load()));
+ 		}
+ 		if (progressDialog.WasCancelled())
+ 			writerContext.cancelled.store(true);
+diff --git a/src/gui/debugger/DisasmCtrl.cpp b/src/gui/debugger/DisasmCtrl.cpp
+index e74d64b92e..1f4b739f8f 100644
+--- a/src/gui/debugger/DisasmCtrl.cpp
++++ b/src/gui/debugger/DisasmCtrl.cpp
+@@ -615,7 +615,7 @@ void DisasmCtrl::OnMouseDClick(const wxPoint& position, uint32 line)
+ 	{
+ 		// double-clicked on disassembly (operation and operand data)
+ 		wxString currentInstruction = wxEmptyString;
+-		wxTextEntryDialog set_value_dialog(this, _("Enter a new instruction."), _(wxString::Format("Overwrite instruction at address %08x", virtualAddress)), currentInstruction);
++		wxTextEntryDialog set_value_dialog(this, _("Enter a new instruction."), wxString::Format(_("Overwrite instruction at address %08x"), virtualAddress), currentInstruction);
+ 		if (set_value_dialog.ShowModal() == wxID_OK)
+ 		{
+ 			PPCAssemblerInOut ctx = { 0 };
+@@ -637,7 +637,7 @@ void DisasmCtrl::OnMouseDClick(const wxPoint& position, uint32 line)
+ 		if (comment && comment->type == RplDebugSymbolComment)
+ 			old_comment = comment->comment;
+ 
+-		wxTextEntryDialog set_value_dialog(this, _("Enter a new comment."), _(wxString::Format("Create comment at address %08x", virtualAddress)), old_comment);
++		wxTextEntryDialog set_value_dialog(this, _("Enter a new comment."), wxString::Format(_("Create comment at address %08x"), virtualAddress), old_comment);
+ 		if (set_value_dialog.ShowModal() == wxID_OK)
+ 		{
+ 			rplDebugSymbol_createComment(virtualAddress, set_value_dialog.GetValue().wc_str());
+@@ -850,4 +850,4 @@ void DisasmCtrl::GoToAddressDialog()
+ 			}
+ 		}
+ 	}
+-}
+\ No newline at end of file
++}
+diff --git a/src/gui/debugger/DumpCtrl.cpp b/src/gui/debugger/DumpCtrl.cpp
+index 16fdd87d24..fad93bd367 100644
+--- a/src/gui/debugger/DumpCtrl.cpp
++++ b/src/gui/debugger/DumpCtrl.cpp
+@@ -196,7 +196,7 @@ void DumpCtrl::OnMouseDClick(const wxPoint& position, uint32 line)
+ 		const uint32 offset = LineToOffset(line) + byte_index;
+ 		const uint8 value = memory_readU8(offset);
+ 
+-		wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), _(wxString::Format("Set byte at address %08x", offset)), wxString::Format("%02x", value));
++		wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), wxString::Format(_("Set byte at address %08x"), offset), wxString::Format("%02x", value));
+ 		if (set_value_dialog.ShowModal() == wxID_OK)
+ 		{
+ 			const uint8 new_value = std::stoul(set_value_dialog.GetValue().ToStdString(), nullptr, 16);
+@@ -303,4 +303,4 @@ void DumpCtrl::OnKeyPressed(sint32 key_code, const wxPoint& position)
+ wxSize DumpCtrl::DoGetBestSize() const
+ {
+ 	return TextList::DoGetBestSize();
+-}
+\ No newline at end of file
++}
+diff --git a/src/gui/debugger/RegisterCtrl.cpp b/src/gui/debugger/RegisterCtrl.cpp
+index bcf6fb5af9..24cae60b04 100644
+--- a/src/gui/debugger/RegisterCtrl.cpp
++++ b/src/gui/debugger/RegisterCtrl.cpp
+@@ -201,7 +201,7 @@ void RegisterCtrl::OnMouseDClick(const wxPoint& position, uint32 line)
+ 		if (position.x <= OFFSET_REGISTER + OFFSET_REGISTER_LABEL)
+ 		{
+ 			const uint32 register_value = debuggerState.debugSession.ppcSnapshot.gpr[register_index];
+-			wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), _(wxString::Format("Set R%d value", register_index)), wxString::Format("%08x", register_value));
++			wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), wxString::Format(_("Set R%d value"), register_index), wxString::Format("%08x", register_value));
+ 			if (set_value_dialog.ShowModal() == wxID_OK)
+ 			{
+ 				const uint32 new_value = std::stoul(set_value_dialog.GetValue().ToStdString(), nullptr, 16);
+@@ -220,7 +220,7 @@ void RegisterCtrl::OnMouseDClick(const wxPoint& position, uint32 line)
+ 		if (position.x <= OFFSET_REGISTER + OFFSET_FPR)
+ 		{
+ 			const double register_value = debuggerState.debugSession.ppcSnapshot.fpr[register_index].fp0;
+-			wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), _(wxString::Format("Set FP0_%d value", register_index)), wxString::Format("%lf", register_value));
++			wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), wxString::Format(_("Set FP0_%d value"), register_index), wxString::Format("%lf", register_value));
+ 			if (set_value_dialog.ShowModal() == wxID_OK)
+ 			{
+ 				const double new_value = std::stod(set_value_dialog.GetValue().ToStdString());
+@@ -234,7 +234,7 @@ void RegisterCtrl::OnMouseDClick(const wxPoint& position, uint32 line)
+ 		else
+ 		{
+ 			const double register_value = debuggerState.debugSession.ppcSnapshot.fpr[register_index].fp1;
+-			wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), _(wxString::Format("Set FP1_%d value", register_index)), wxString::Format("%lf", register_value));
++			wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), wxString::Format(_("Set FP1_%d value"), register_index), wxString::Format("%lf", register_value));
+ 			if (set_value_dialog.ShowModal() == wxID_OK)
+ 			{
+ 				const double new_value = std::stod(set_value_dialog.GetValue().ToStdString());
+diff --git a/src/gui/debugger/RegisterWindow.cpp b/src/gui/debugger/RegisterWindow.cpp
+index 55c6386f74..b18d4e2710 100644
+--- a/src/gui/debugger/RegisterWindow.cpp
++++ b/src/gui/debugger/RegisterWindow.cpp
+@@ -339,7 +339,7 @@ void RegisterWindow::OnMouseDClickEvent(wxMouseEvent& event)
+ 	{
+ 		const uint32 register_index = id - kRegisterValueR0;
+ 		const uint32 register_value = debuggerState.debugSession.ppcSnapshot.gpr[register_index];
+-		wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), _(wxString::Format("Set R%d value", register_index)), wxString::Format("%08x", register_value));
++		wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), wxString::Format(_("Set R%d value"), register_index), wxString::Format("%08x", register_value));
+ 		if (set_value_dialog.ShowModal() == wxID_OK)
+ 		{
+ 			const uint32 new_value = std::stoul(set_value_dialog.GetValue().ToStdString(), nullptr, 16);
+@@ -355,7 +355,7 @@ void RegisterWindow::OnMouseDClickEvent(wxMouseEvent& event)
+ 	{
+ 		const uint32 register_index = id - kRegisterValueFPR0_0;
+ 		const double register_value = debuggerState.debugSession.ppcSnapshot.fpr[register_index].fp0;
+-		wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), _(wxString::Format("Set FP0_%d value", register_index)), wxString::Format("%lf", register_value));
++		wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), wxString::Format(_("Set FP0_%d value"), register_index), wxString::Format("%lf", register_value));
+ 		if (set_value_dialog.ShowModal() == wxID_OK)
+ 		{
+ 			const double new_value = std::stod(set_value_dialog.GetValue().ToStdString());
+@@ -371,7 +371,7 @@ void RegisterWindow::OnMouseDClickEvent(wxMouseEvent& event)
+ 	{
+ 		const uint32 register_index = id - kRegisterValueFPR1_0;
+ 		const double register_value = debuggerState.debugSession.ppcSnapshot.fpr[register_index].fp1;
+-		wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), _(wxString::Format("Set FP1_%d value", register_index)), wxString::Format("%lf", register_value));
++		wxTextEntryDialog set_value_dialog(this, _("Enter a new value."), wxString::Format(_("Set FP1_%d value"), register_index), wxString::Format("%lf", register_value));
+ 		if (set_value_dialog.ShowModal() == wxID_OK)
+ 		{
+ 			const double new_value = std::stod(set_value_dialog.GetValue().ToStdString());
