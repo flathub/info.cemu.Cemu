@@ -23,6 +23,11 @@ finish-args:
   - --filesystem=xdg-run/app/com.discordapp.DiscordCanary:ro
   # Required for Gamescope on Steam Deck OLED when using the Vulkan renderer
   - --filesystem=xdg-run/gamescope-0:ro
+cleanup:
+  - /include
+  - /lib/cmake
+  - /lib/pkgconfig
+  - /share/doc
 
 modules:
   - name: hidapi
@@ -36,19 +41,11 @@ modules:
           project-id: 5594
           stable-only: true
           url-template: https://github.com/libusb/hidapi/archive/refs/tags/hidapi-$version.tar.gz
-    cleanup:
-      - /include
-      - /lib/cmake
-      - /lib/pkgconfig
 
   - name: pugixml
     buildsystem: cmake-ninja
     config-opts:
       - -DBUILD_SHARED_LIBS=ON
-    cleanup:
-      - /include
-      - /lib/cmake
-      - /lib/pkgconfig
     sources:
       - type: archive
         url: https://github.com/zeux/pugixml/releases/download/v1.15/pugixml-1.15.tar.gz
@@ -58,16 +55,12 @@ modules:
           project-id: 3728
           url-template: https://github.com/zeux/pugixml/releases/download/v$version/pugixml-$version.tar.gz
 
-
   - name: boost
     buildsystem: simple
     build-commands:
       - ./bootstrap.sh --prefix=${FLATPAK_DEST} --with-toolset=gcc --with-libraries=filesystem,system,program_options,nowide
       - ./b2 install variant=release link=shared runtime-link=shared cxxflags="$CXXFLAGS"
         linkflags="$LDFLAGS" -j ${FLATPAK_BUILDER_N_JOBS}
-    cleanup:
-      - /include
-      - /lib/cmake
     sources:
       - type: archive
         url: https://archives.boost.org/release/1.88.0/source/boost_1_88_0.tar.bz2
@@ -88,9 +81,6 @@ modules:
       - -DBUILD_TOOLS=OFF
     cleanup:
       - /bin
-      - /include
-      - /lib/cmake
-      - /lib/pkgconfig
     sources:
       - type: archive
         url: https://libzip.org/download/libzip-1.11.4.tar.xz
@@ -108,11 +98,6 @@ modules:
       - -DRAPIDJSON_BUILD_DOC=OFF
       - -DRAPIDJSON_BUILD_EXAMPLES=OFF
       - -DRAPIDJSON_BUILD_TESTS=OFF
-    cleanup:
-      - /include
-      - /lib/cmake
-      - /lib/pkgconfig
-      - /share/doc
     sources:
       - type: git
         url: https://github.com/Tencent/rapidjson.git
@@ -157,10 +142,9 @@ modules:
       - -DwxUSE_XRC=ON
     cleanup:
       - /bin
-      - /include
-      - /lib/cmake
       - /lib/wx
-      - /share
+    post-install:
+      - install -Dm644 docs/{gpl.txt,lgpl.txt,licence.txt,licendoc.txt,preamble.txt,xserver.txt} -t $FLATPAK_DEST/share/licenses/$FLATPAK_ID/wxWidgets/
     sources:
       - type: archive
         url: https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.8.1/wxWidgets-3.2.8.1.tar.bz2
